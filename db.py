@@ -82,7 +82,7 @@ def create_table(database):
 def insert(table_name, data):
     connection, database = connect_db()
     try:
-        database.execute(f"INSERT INTO {table_name} (`{"`,`".join(data.keys())}`) VALUES ({",".join(["?" for item in data])});", list(data.values()))
+        database.execute(f"INSERT INTO {table_name} (`{'`,`'.join(data.keys())}`) VALUES ({','.join(['?' for item in data])});", list(data.values()))
         connection.commit()
     except sqlite3.OperationalError as err:
         print(f"{table_name}資料表新增失敗::")

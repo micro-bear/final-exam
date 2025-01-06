@@ -114,7 +114,7 @@ def showMovieTimeable(event):
     movieDateIds = [item['id'] for item in database.fetchall()]
 
     #提取勾選資料
-    venueSql = f"SELECT * FROM `venues` Where `id` in ({",".join(map(str, searchVenues))})"
+    venueSql = f"SELECT * FROM `venues` Where `id` in ({','.join(map(str, searchVenues))})"
     database.execute(venueSql)
     venues = database.fetchall()
     data = []
@@ -130,7 +130,7 @@ def showMovieTimeable(event):
             itemHallDict = dict(itemHall)
 
             #透過資料表找尋時刻表
-            timeSql = f"SELECT timeables.* FROM `hall_has_movie` LEFT JOIN `timeables` on `timeables`.`id` = `hall_has_movie`.`timeable_id` Where `hall_id` = ? AND `movie_date_id` in ({",".join(map(str, movieDateIds))}) ORDER BY `timeables`.`name`"
+            timeSql = f"SELECT timeables.* FROM `hall_has_movie` LEFT JOIN `timeables` on `timeables`.`id` = `hall_has_movie`.`timeable_id` Where `hall_id` = ? AND `movie_date_id` in ({','.join(map(str, movieDateIds))}) ORDER BY `timeables`.`name`"
             database.execute(timeSql, [itemHallDict['id']])
             itemHallDict['times'] = database.fetchall()
             if len(itemHallDict['times']) > 0 :
@@ -175,7 +175,7 @@ def searchMovies():
     print(venues)
     connection, database = db.connect_db()
     #顯示該影城上映電影
-    sql = f"SELECT movies.* FROM `venue_has_movie` Left Join `movies` on `movies`.`id` = `venue_has_movie`.`movie_id` Where `venue_id` in ({",".join(map(str, venues))}) Group By movie_id Order by movie_id;"
+    sql = f"SELECT movies.* FROM `venue_has_movie` Left Join `movies` on `movies`.`id` = `venue_has_movie`.`movie_id` Where `venue_id` in ({','.join(map(str, venues))}) Group By movie_id Order by movie_id;"
     database.execute(sql)
     venue_has_movies = database.fetchall()
     #顯示勾選日期有的電影
